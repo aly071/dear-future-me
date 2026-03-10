@@ -1,36 +1,78 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 💌 Dear Future Me
 
-## Getting Started
+A cute and interactive web application that lets you write a letter to your future self. Your letter gets delivered to your email on a chosen future date — sealed with a custom envelope, fonts, and stickers.
 
-First, run the development server:
+## ✨ Features
 
+- 📝 Write a letter to your future self
+- 🎨 Customize your envelope — colors, fonts, and stickers
+- 📅 Choose a delivery date (3 months, 1 year, or any custom date)
+- ✉️ Automatic email delivery on the scheduled date
+- 👀 Preview your letter before sending
+
+## 🛠️ Tech Stack
+
+- **Frontend** — Next.js 14, Tailwind CSS v4, Framer Motion
+- **Backend** — Next.js API Routes, Prisma v5, PostgreSQL
+- **Database** — Supabase (PostgreSQL)
+- **Email** — Resend + React Email
+- **Deployment** — Vercel + Vercel Cron
+
+## 🚀 Getting Started
+
+### 1. Clone the repo
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+git clone https://github.com/aly071/dear-future-me.git
+cd dear-future-me
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### 2. Install dependencies
+```bash
+npm install
+```
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### 3. Set up environment variables
+```bash
+cp .env.local.example .env.local
+```
+Fill in your Supabase, Resend, and secret token values.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+### 4. Run database migration
+```bash
+npx prisma migrate dev --name init
+```
 
-## Learn More
+### 5. Run the development server
+```bash
+npm run dev
+```
 
-To learn more about Next.js, take a look at the following resources:
+Open [http://localhost:3000](http://localhost:3000) in your browser.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## 📁 Project Structure
+```
+dear-future-me/
+├── app/                  # Next.js App Router
+│   ├── api/              # API routes
+│   ├── write/            # 4-step wizard page
+│   └── letter/[id]/      # Letter web view
+├── components/           # React components
+│   ├── editor/           # Step 1 - Write
+│   ├── customize/        # Step 2 - Decorate
+│   ├── preview/          # Step 3 - Preview
+│   ├── confirm/          # Step 4 - Confirm
+│   └── wizard/           # Wizard shell & stepper
+├── emails/               # React Email templates
+├── lib/                  # Prisma, Resend, helpers
+├── prisma/               # Database schema
+├── store/                # Zustand state
+└── types/                # TypeScript types
+```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## 🌍 Deployment
 
-## Deploy on Vercel
+Deployed on [Vercel](https://vercel.com). Letters are delivered daily via Vercel Cron at 08:00 UTC.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## 📄 License
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+MIT
