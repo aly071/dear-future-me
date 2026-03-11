@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server'
 import { prisma } from '@/lib/prisma'
 import { generateToken, buildUrl } from '@/lib/crypto'
+import { sendVerificationEmail } from '@/lib/resend'
 import { z } from 'zod'
 
 const schema = z.object({
@@ -30,7 +31,6 @@ export async function POST(req: Request) {
 
     const { email, nickname, title, message, deliveryDate, design } = parsed.data
 
-    // Validate delivery date is in the future
     const dDate = new Date(deliveryDate + 'T00:00:00')
     if (dDate <= new Date()) {
       return NextResponse.json(
@@ -39,12 +39,10 @@ export async function POST(req: Request) {
       )
     }
 
-    // Generate tokens
     const verifyToken = generateToken()
     const cancelToken = generateToken()
     const viewToken   = generateToken()
 
-    // Save to database
     const letter = await prisma.letter.create({
       data: {
         email,
@@ -59,13 +57,17 @@ export async function POST(req: Request) {
       },
     })
 
-    // Build verify and cancel URLs
     const verifyUrl = buildUrl('/api/verify', { token: verifyToken })
     const cancelUrl = buildUrl('/api/letters/' + letter.id + '/cancel', { token: cancelToken })
 
-    // Log for now — we'll hook up real email in Step 10
-    console.log('📧 Verify URL:', verifyUrl)
-    console.log('❌ Cancel URL:', cancelUrl)
+    await sendVerificationEmail({
+      to:           email,
+      verifyUrl,
+      cancelUrl,
+      deliveryDate: dDate.toLocaleDateString('en-US', {
+        year: 'numeric', month: 'long', day: 'numeric'
+      }),
+    })
 
     return NextResponse.json({
       id:           letter.id,

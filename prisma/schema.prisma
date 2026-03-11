@@ -7,14 +7,6 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-enum LetterStatus {
-  PENDING_VERIFY
-  SCHEDULED
-  SENT
-  CANCELLED
-  FAILED
-}
-
 model Letter {
   id           String       @id @default(cuid())
   email        String
@@ -32,4 +24,12 @@ model Letter {
 
   @@index([deliveryDate])
   @@index([status, deliveryDate])
+}
+
+enum LetterStatus {
+  PENDING_VERIFY
+  SCHEDULED
+  SENT
+  CANCELLED
+  FAILED
 }
