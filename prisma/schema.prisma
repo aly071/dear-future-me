@@ -1,0 +1,35 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum LetterStatus {
+  PENDING_VERIFY
+  SCHEDULED
+  SENT
+  CANCELLED
+  FAILED
+}
+
+model Letter {
+  id           String       @id @default(cuid())
+  email        String
+  nickname     String?
+  title        String?
+  message      String
+  deliveryDate DateTime
+  design       Json
+  status       LetterStatus @default(PENDING_VERIFY)
+  verifyToken  String?      @unique
+  cancelToken  String?      @unique
+  viewToken    String       @unique
+  sentAt       DateTime?
+  createdAt    DateTime     @default(now())
+
+  @@index([deliveryDate])
+  @@index([status, deliveryDate])
+}
