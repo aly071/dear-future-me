@@ -1,28 +1,26 @@
 import { create } from 'zustand'
-import type { FontChoice } from '@/types/letter'
+import type { FontChoice, SealChoice } from '@/types/letter'
 
 interface LetterStore {
-  // Navigation
   step: 1 | 2 | 3 | 4
   setStep: (step: 1 | 2 | 3 | 4) => void
 
-  // Step 1 — letter content
   email:        string
   nickname:     string
   title:        string
   message:      string
   deliveryDate: string
 
-  // Step 2 — design
   color:    string
   font:     FontChoice
   stickers: string[]
+  seal:     SealChoice
 
-  // Actions
   setField:      (key: string, value: string) => void
   toggleSticker: (emoji: string) => void
   setColor:      (color: string) => void
   setFont:       (font: FontChoice) => void
+  setSeal:       (seal: SealChoice) => void
   reset:         () => void
 }
 
@@ -36,15 +34,14 @@ const defaults = {
   color:        '#e8c4b4',
   font:         'caveat' as FontChoice,
   stickers:     [] as string[],
+  seal:         'none' as SealChoice,
 }
 
 export const useLetterStore = create<LetterStore>((set) => ({
   ...defaults,
 
   setStep: (step) => set({ step }),
-
   setField: (key, value) => set({ [key]: value } as any),
-
   toggleSticker: (emoji) => set((state) => ({
     stickers: state.stickers.includes(emoji)
       ? state.stickers.filter((s) => s !== emoji)
@@ -52,8 +49,8 @@ export const useLetterStore = create<LetterStore>((set) => ({
         ? [...state.stickers, emoji]
         : state.stickers,
   })),
-
   setColor: (color) => set({ color }),
   setFont:  (font)  => set({ font }),
+  setSeal:  (seal)  => set({ seal }),
   reset:    ()      => set(defaults),
 }))

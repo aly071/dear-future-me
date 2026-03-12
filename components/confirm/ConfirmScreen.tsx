@@ -33,6 +33,7 @@ export function ConfirmScreen() {
               color:    store.color,
               font:     store.font,
               stickers: store.stickers,
+              seal:     store.seal,
             },
           }),
         })

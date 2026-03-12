@@ -14,6 +14,7 @@ const schema = z.object({
     color:    z.string().regex(/^#[0-9a-f]{6}$/i),
     font:     z.enum(['caveat', 'lora', 'playfair', 'dm-serif']),
     stickers: z.array(z.string()).max(5),
+    seal:     z.enum(['none', 'thistle', 'bouquet', 'bow', 'rose', 'wreath', 'daisy']).optional(),
   }),
 })
 

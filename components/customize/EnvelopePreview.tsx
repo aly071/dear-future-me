@@ -1,12 +1,15 @@
 'use client'
 import { motion } from 'framer-motion'
+import Image from 'next/image'
+import type { SealChoice } from '@/types/letter'
 
 interface Props {
-  color: string
+  color:    string
   stickers: string[]
+  seal:     SealChoice
 }
 
-export function EnvelopePreview({ color, stickers }: Props) {
+export function EnvelopePreview({ color, stickers, seal }: Props) {
   return (
     <motion.div
       className="relative mx-auto cursor-pointer"
@@ -49,11 +52,29 @@ export function EnvelopePreview({ color, stickers }: Props) {
         filter: 'brightness(0.88)',
       }} />
 
-      {/* Seal */}
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-10
-        w-11 h-11 rounded-full bg-[#e8c06c] border-2 border-[#c8962c]
-        flex items-center justify-center text-lg shadow-md">
-        ✦
+      {/* Wax seal */}
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-10 w-30 h-30">
+        {seal === 'none' ? (
+          <div className="w-full h-full rounded-full bg-[#e8c06c] border-2 border-[#c8962c]
+            flex items-center justify-center text-lg shadow-md">
+            ✦
+          </div>
+        ) : (
+          <motion.div
+            initial={{ scale: 0, rotate: -20 }}
+            animate={{ scale: 1, rotate: 0 }}
+            transition={{ type: 'spring', stiffness: 300 }}
+            className="w-full h-full"
+          >
+            <Image
+              src={`/seals/${seal}.png`}
+              alt={seal}
+              width={100}
+              height={100}
+              className="w-full h-full object-contain drop-shadow-lg"
+            />
+          </motion.div>
+        )}
       </div>
 
       {/* Stickers */}
