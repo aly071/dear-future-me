@@ -1,5 +1,5 @@
 import { create } from 'zustand'
-import type { FontChoice, SealChoice } from '@/types/letter'
+import type { FontChoice, SealChoice, EnvelopeChoice } from '@/types/letter'
 
 interface LetterStore {
   step: 1 | 2 | 3 | 4
@@ -15,12 +15,14 @@ interface LetterStore {
   font:     FontChoice
   stickers: string[]
   seal:     SealChoice
+  envelope: EnvelopeChoice
 
   setField:      (key: string, value: string) => void
   toggleSticker: (emoji: string) => void
   setColor:      (color: string) => void
   setFont:       (font: FontChoice) => void
   setSeal:       (seal: SealChoice) => void
+  setEnvelope:   (envelope: EnvelopeChoice) => void
   reset:         () => void
 }
 
@@ -35,13 +37,13 @@ const defaults = {
   font:         'caveat' as FontChoice,
   stickers:     [] as string[],
   seal:         'none' as SealChoice,
+  envelope:     'classic' as EnvelopeChoice,
 }
 
 export const useLetterStore = create<LetterStore>((set) => ({
   ...defaults,
-
-  setStep: (step) => set({ step }),
-  setField: (key, value) => set({ [key]: value } as any),
+  setStep:      (step)     => set({ step }),
+  setField:     (key, value) => set({ [key]: value } as any),
   toggleSticker: (emoji) => set((state) => ({
     stickers: state.stickers.includes(emoji)
       ? state.stickers.filter((s) => s !== emoji)
@@ -49,8 +51,9 @@ export const useLetterStore = create<LetterStore>((set) => ({
         ? [...state.stickers, emoji]
         : state.stickers,
   })),
-  setColor: (color) => set({ color }),
-  setFont:  (font)  => set({ font }),
-  setSeal:  (seal)  => set({ seal }),
-  reset:    ()      => set(defaults),
+  setColor:    (color)    => set({ color }),
+  setFont:     (font)     => set({ font }),
+  setSeal:     (seal)     => set({ seal }),
+  setEnvelope: (envelope) => set({ envelope }),
+  reset:       ()         => set(defaults),
 }))

@@ -34,6 +34,7 @@ export function ConfirmScreen() {
               font:     store.font,
               stickers: store.stickers,
               seal:     store.seal,
+              envelope: store.envelope,
             },
           }),
         })
