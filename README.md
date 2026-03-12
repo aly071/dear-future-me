@@ -1,78 +1,56 @@
 # 💌 Dear Future Me
 
-A cute and interactive web application that lets you write a letter to your future self. Your letter gets delivered to your email on a chosen future date — sealed with a custom envelope, fonts, and stickers.
+Dear Future Me is a heartfelt little web app I built where you can write a letter to your future self. You pick a date, write your letter, decorate your envelope, and it gets delivered straight to your inbox when the time comes.
 
-## ✨ Features
+Live site: **https://dear-future-me-five.vercel.app**
 
-- 📝 Write a letter to your future self
-- 🎨 Customize your envelope — colors, fonts, and stickers
-- 📅 Choose a delivery date (3 months, 1 year, or any custom date)
-- ✉️ Automatic email delivery on the scheduled date
-- 👀 Preview your letter before sending
+## ✨ What it does
 
-## 🛠️ Tech Stack
+- 📝 Write a personal letter to your future self
+- 🎨 Customize your envelope with colors, fonts, and stickers
+- 📅 Choose any future delivery date — or pick a milestone like 6 months or 1 year
+- ✉️ Automatic email delivery on your chosen date
+- 👀 Preview your letter before sealing it
 
-- **Frontend** — Next.js 14, Tailwind CSS v4, Framer Motion
-- **Backend** — Next.js API Routes, Prisma v5, PostgreSQL
-- **Database** — Supabase (PostgreSQL)
-- **Email** — Resend + React Email
-- **Deployment** — Vercel + Vercel Cron
+## 🛠️ Built with
 
-## 🚀 Getting Started
+- **Next.js 16** — App Router + API Routes
+- **Tailwind CSS v4** — styling
+- **Framer Motion** — animations
+- **Zustand** — state management
+- **Prisma v5 + Supabase** — database
+- **Resend + React Email** — email delivery
+- **Vercel + Vercel Cron** — deployment and scheduling
 
-### 1. Clone the repo
-```bash
-git clone https://github.com/aly071/dear-future-me.git
-cd dear-future-me
-```
-
-### 2. Install dependencies
-```bash
-npm install
-```
-
-### 3. Set up environment variables
-```bash
-cp .env.local.example .env.local
-```
-Fill in your Supabase, Resend, and secret token values.
-
-### 4. Run database migration
-```bash
-npx prisma migrate dev --name init
-```
-
-### 5. Run the development server
-```bash
-npm run dev
-```
-
-Open [http://localhost:3000](http://localhost:3000) in your browser.
-
-## 📁 Project Structure
+## 📁 Project structure
 ```
 dear-future-me/
 ├── app/                  # Next.js App Router
-│   ├── api/              # API routes
+│   ├── api/              # API routes (letters, verify, cron)
 │   ├── write/            # 4-step wizard page
-│   └── letter/[id]/      # Letter web view
-├── components/           # React components
-│   ├── editor/           # Step 1 - Write
-│   ├── customize/        # Step 2 - Decorate
-│   ├── preview/          # Step 3 - Preview
-│   ├── confirm/          # Step 4 - Confirm
+│   └── confirmed/        # Post-verification page
+├── components/
+│   ├── editor/           # Step 1 — Write your letter
+│   ├── customize/        # Step 2 — Decorate your envelope
+│   ├── preview/          # Step 3 — Preview
+│   ├── confirm/          # Step 4 — Confirm & send
 │   └── wizard/           # Wizard shell & stepper
 ├── emails/               # React Email templates
-├── lib/                  # Prisma, Resend, helpers
-├── prisma/               # Database schema
-├── store/                # Zustand state
+├── lib/                  # Prisma, Resend, scheduler, crypto helpers
+├── prisma/               # Database schema & migrations
+├── store/                # Zustand letter store
 └── types/                # TypeScript types
 ```
 
-## 🌍 Deployment
+## 🙋‍♀️ Connect with me
 
-Deployed on [Vercel](https://vercel.com). Letters are delivered daily via Vercel Cron at 08:00 UTC.
+I'd love to hear what you think of this project!
+
+- 🌐 Portfolio — [nxahlyv2.vercel.app](https://nxahlyv2.vercel.app)
+- 💼 LinkedIn — [nathaly-pearl-s](https://www.linkedin.com/in/nathaly-pearl-s-08396a347/)
+- 🐙 GitHub — [aly071](https://github.com/aly071)
+- 📧 Email — salanatinnathaly@gmail.com
 
 ## 📄 License
 
-MIT
+Open for inspiration and learning. Please don't copy the design directly. ✦
