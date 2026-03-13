@@ -38,7 +38,7 @@ const defaults = {
   color:        '#e8c4b4',
   font:         'caveat' as FontChoice,
   stickers:     [] as string[],
-  seal:         'none' as SealChoice,
+  seal:         'thistle' as SealChoice,
   envelope:     'classic' as EnvelopeChoice,
   paper:        'parchment' as PaperChoice,
 }

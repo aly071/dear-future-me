@@ -1,0 +1,113 @@
+'use client'
+import Image from 'next/image'
+import { useState, useRef } from 'react'
+import type { SealChoice, EnvelopeChoice } from '@/types/letter'
+
+interface Props {
+  envelope: EnvelopeChoice
+  stickers: string[]
+  seal:     SealChoice
+}
+
+export function EnvelopePreview({ envelope, stickers, seal }: Props) {
+  const envelopeRef = useRef<HTMLDivElement>(null)
+  const [positions, setPositions] = useState<Record<string, { x: number; y: number }>>({})
+  const [dragging, setDragging] = useState<string | null>(null)
+
+  function getDefaultPos(index: number) {
+    const defaults = [
+      { x: 20,  y: 20  },
+      { x: 380, y: 20  },
+      { x: 20,  y: 220 },
+      { x: 380, y: 220 },
+      { x: 200, y: 20  },
+    ]
+    return defaults[index % defaults.length]
+  }
+
+  function getStickerPos(emoji: string, index: number) {
+    return positions[emoji] ?? getDefaultPos(index)
+  }
+
+  function onMouseDown(e: React.MouseEvent, emoji: string) {
+    e.preventDefault()
+    setDragging(emoji)
+  }
+
+  function onMouseMove(e: React.MouseEvent) {
+    if (!dragging || !envelopeRef.current) return
+    const rect = envelopeRef.current.getBoundingClientRect()
+    const x = Math.min(Math.max(e.clientX - rect.left - 16, 0), rect.width - 32)
+    const y = Math.min(Math.max(e.clientY - rect.top - 16, 0), rect.height - 32)
+    setPositions((prev) => ({ ...prev, [dragging]: { x, y } }))
+  }
+
+  function onMouseUp() {
+    setDragging(null)
+  }
+
+  function onTouchStart(e: React.TouchEvent, emoji: string) {
+    setDragging(emoji)
+  }
+
+  function onTouchMove(e: React.TouchEvent) {
+    if (!dragging || !envelopeRef.current) return
+    const touch = e.touches[0]
+    const rect = envelopeRef.current.getBoundingClientRect()
+    const x = Math.min(Math.max(touch.clientX - rect.left - 16, 0), rect.width - 32)
+    const y = Math.min(Math.max(touch.clientY - rect.top - 16, 0), rect.height - 32)
+    setPositions((prev) => ({ ...prev, [dragging]: { x, y } }))
+  }
+
+  return (
+    <div
+      ref={envelopeRef}
+      className="relative mx-auto cursor-default select-none"
+      style={{ width: 480, height: 320 }}
+      onMouseMove={onMouseMove}
+      onMouseUp={onMouseUp}
+      onMouseLeave={onMouseUp}
+      onTouchMove={onTouchMove}
+      onTouchEnd={onMouseUp}
+    >
+      <Image
+        src={`/envelopes/${envelope}.png`}
+        alt={envelope}
+        fill
+        className="object-contain drop-shadow-xl pointer-events-none"
+      />
+
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-10 w-20 h-20 pointer-events-none">
+        {seal === 'none' ? (
+          <div className="w-full h-full rounded-full bg-[#e8c06c] border-2 border-[#c8962c] flex items-center justify-center text-lg shadow-md">
+            ✦
+          </div>
+        ) : (
+          <Image
+            src={`/seals/${seal}.png`}
+            alt={seal}
+            width={80}
+            height={80}
+            className="w-full h-full object-contain drop-shadow-lg"
+          />
+        )}
+      </div>
+
+      {stickers.map((s, i) => {
+        const pos = getStickerPos(s, i)
+        const stickerClass = dragging === s
+          ? 'absolute text-2xl z-30 cursor-grab scale-125 select-none transition-transform'
+          : 'absolute text-2xl z-20 cursor-grab hover:scale-110 select-none transition-transform'
+        return (
+          <div
+            key={s}
+            className={stickerClass}
+            style={{ left: pos.x, top: pos.y }}
+            onMouseDown={(e) => onMouseDown(e, s)}
+            onTouchStart={(e) => onTouchStart(e, s)}
+            title="Drag to move"
+          >
+            {s}
+          </div>
+        )
+      })}
