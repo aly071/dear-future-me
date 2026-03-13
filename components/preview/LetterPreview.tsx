@@ -1,5 +1,6 @@
 'use client'
 import { useLetterStore } from '@/store/letterStore'
+import Image from 'next/image'
 
 const fontMap: Record<string, string> = {
   caveat:     'font-handwriting',
@@ -9,7 +10,7 @@ const fontMap: Record<string, string> = {
 }
 
 export function LetterPreview() {
-  const { message, nickname, email, deliveryDate, color, font, stickers, setStep } = useLetterStore()
+  const { message, nickname, title, email, deliveryDate, font, stickers, seal, envelope, setStep } = useLetterStore()
 
   const fontClass = fontMap[font] || 'font-handwriting'
 
@@ -26,51 +27,84 @@ export function LetterPreview() {
   return (
     <div>
       <h2 className="font-display italic text-3xl text-ink mb-2">Your letter, sealed</h2>
-      <p className="font-body text-ink-light italic text-sm mb-8">Take a moment. Does it feel right?</p>
+      <p className="font-body text-ink-light italic text-sm mb-10">Take a moment. Does it feel right?</p>
 
-      {/* Letter paper */}
-      <div className="relative bg-[#fffdf7] shadow-lg rounded-sm p-12 mb-6"
-        style={{
-          backgroundImage: 'repeating-linear-gradient(transparent, transparent 27px, rgba(168,130,90,0.1) 27px, rgba(168,130,90,0.1) 28px)',
-          boxShadow: `0 4px 32px rgba(0,0,0,0.1), 4px 4px 0 ${color}`,
-        }}>
+      {/* Envelope + Letter preview — like the photo */}
+      <div className="relative mx-auto mb-10" style={{ width: 420, height: 480 }}>
 
-        {/* Paper corner fold */}
-        <div className="absolute top-0 right-0 w-0 h-0"
-          style={{ borderStyle: 'solid', borderWidth: '0 32px 32px 0', borderColor: 'transparent #f5e6c8 transparent transparent' }} />
+        {/* Envelope behind — tilted slightly */}
+        <div className="absolute bottom-0 left-4 w-full"
+          style={{ transform: 'rotate(-4deg)', zIndex: 1 }}>
+          <Image
+            src={`/envelopes/${envelope}.png`}
+            alt={envelope}
+            width={400}
+            height={280}
+            className="w-full object-contain drop-shadow-xl"
+          />
 
-        {/* Stickers row */}
-        {stickers.length > 0 && (
-          <div className="flex gap-2 mb-6 text-2xl">
-            {stickers.map((s, i) => <span key={i}>{s}</span>)}
+          {/* Wax seal on envelope */}
+          {seal !== 'none' && (
+            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-16 h-16 z-10">
+              <Image
+                src={`/seals/${seal}.png`}
+                alt={seal}
+                width={64}
+                height={64}
+                className="w-full h-full object-contain drop-shadow-lg"
+              />
+            </div>
+          )}
+        </div>
+
+        {/* Letter card in front — tilted opposite */}
+        <div className="absolute top-0 right-0 w-72 z-20"
+          style={{ transform: 'rotate(3deg)' }}>
+          <div className="bg-[#fffdf7] rounded-sm shadow-2xl p-8 border border-parchment/60"
+            style={{ minHeight: '320px' }}>
+
+            {/* Stickers row */}
+            {stickers.length > 0 && (
+              <div className="flex gap-1 mb-4 text-lg">
+                {stickers.map((s, i) => <span key={i}>{s}</span>)}
+              </div>
+            )}
+
+            {/* Title / To line */}
+            <p className={`text-xs tracking-widest text-ink-light uppercase mb-3 font-body`}>
+              {title || 'Dear Future Me'}
+            </p>
+
+            {/* Message preview — first few lines */}
+            <p className={`text-ink leading-7 text-sm mb-6 ${fontClass}`}
+              style={{
+                display: '-webkit-box',
+                WebkitLineClamp: 6,
+                WebkitBoxOrient: 'vertical',
+                overflow: 'hidden',
+              }}>
+              Dear future {nickname || 'me'},<br /><br />
+              {message}
+            </p>
+
+            {/* Sign off */}
+            <p className={`text-sm text-ink-light italic ${fontClass}`}>
+              xo,<br />
+              your past self ✦
+            </p>
+
+            {/* Date stamp */}
+            <p className="font-body text-xs text-ink-light/50 mt-4 text-right">
+              {today}
+            </p>
           </div>
-        )}
-
-        {/* Date */}
-        <div className={`text-right text-sm text-ink-light mb-8 ${fontClass}`}>
-          Today, {today}
         </div>
 
-        {/* Salutation */}
-        <div className={`text-2xl text-ink mb-6 ${fontClass}`}>
-          Dear future {nickname || 'me'},
-        </div>
-
-        {/* Message */}
-        <div className={`text-lg text-ink leading-8 whitespace-pre-wrap mb-12 ${fontClass}`}>
-          {message}
-        </div>
-
-        {/* Sign off */}
-        <div className={`text-lg text-ink-light italic ${fontClass}`}>
-          With love,<br />
-          your past self ✦
-        </div>
       </div>
 
       {/* Delivery info */}
       <div className="text-center font-handwriting text-sm text-ink-light mb-8">
-        This letter will be delivered to{' '}
+        Delivering to{' '}
         <strong className="text-rose">{email}</strong>
         {' '}on{' '}
         <strong className="text-rose">{dDate}</strong>
