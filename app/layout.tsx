@@ -1,6 +1,11 @@
 import { DM_Serif_Display, Lora } from 'next/font/google'
 import './globals.css'
 
+export const metadata = {
+  title: 'Dear Future You',
+  description: 'Write a letter to your future self',
+}
+
 const serif = DM_Serif_Display({
   subsets: ['latin'],
   weight: '400',
