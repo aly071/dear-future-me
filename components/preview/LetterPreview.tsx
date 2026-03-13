@@ -10,7 +10,7 @@ const fontMap: Record<string, string> = {
 }
 
 export function LetterPreview() {
-  const { message, nickname, title, email, deliveryDate, font, stickers, seal, envelope, setStep } = useLetterStore()
+  const { message, nickname, title, email, deliveryDate, font, stickers, seal, envelope, paper, setStep } = useLetterStore()
 
   const fontClass = fontMap[font] || 'font-handwriting'
 
@@ -29,7 +29,7 @@ export function LetterPreview() {
       <h2 className="font-display italic text-3xl text-ink mb-2">Your letter, sealed</h2>
       <p className="font-body text-ink-light italic text-sm mb-10">Take a moment. Does it feel right?</p>
 
-      {/* Envelope + Letter preview — like the photo */}
+      {/* Envelope + Letter preview */}
       <div className="relative mx-auto mb-10" style={{ width: 420, height: 480 }}>
 
         {/* Envelope behind — tilted slightly */}
@@ -60,43 +60,54 @@ export function LetterPreview() {
         {/* Letter card in front — tilted opposite */}
         <div className="absolute top-0 right-0 w-72 z-20"
           style={{ transform: 'rotate(3deg)' }}>
-          <div className="bg-[#fffdf7] rounded-sm shadow-2xl p-8 border border-parchment/60"
+
+          {/* Paper background with content */}
+          <div className="relative rounded-sm shadow-2xl overflow-hidden"
             style={{ minHeight: '320px' }}>
+            <Image
+              src={`/papers/${paper}.png`}
+              alt="paper"
+              fill
+              className="object-cover"
+            />
+            <div className="relative z-10 p-8">
 
-            {/* Stickers row */}
-            {stickers.length > 0 && (
-              <div className="flex gap-1 mb-4 text-lg">
-                {stickers.map((s, i) => <span key={i}>{s}</span>)}
-              </div>
-            )}
+              {/* Stickers row */}
+              {stickers.length > 0 && (
+                <div className="flex gap-1 mb-4 text-lg">
+                  {stickers.map((s, i) => <span key={i}>{s}</span>)}
+                </div>
+              )}
 
-            {/* Title / To line */}
-            <p className={`text-xs tracking-widest text-ink-light uppercase mb-3 font-body`}>
-              {title || 'Dear Future Me'}
-            </p>
+              {/* Title / To line */}
+              <p className="text-xs tracking-widest text-ink-light uppercase mb-3 font-body">
+                {title || 'Dear Future Me'}
+              </p>
 
-            {/* Message preview — first few lines */}
-            <p className={`text-ink leading-7 text-sm mb-6 ${fontClass}`}
-              style={{
-                display: '-webkit-box',
-                WebkitLineClamp: 6,
-                WebkitBoxOrient: 'vertical',
-                overflow: 'hidden',
-              }}>
-              Dear future {nickname || 'me'},<br /><br />
-              {message}
-            </p>
+              {/* Message preview */}
+              <p className={`text-ink leading-7 text-sm mb-6 ${fontClass}`}
+                style={{
+                  display: '-webkit-box',
+                  WebkitLineClamp: 6,
+                  WebkitBoxOrient: 'vertical',
+                  overflow: 'hidden',
+                }}>
+                Dear future {nickname || 'me'},<br /><br />
+                {message}
+              </p>
 
-            {/* Sign off */}
-            <p className={`text-sm text-ink-light italic ${fontClass}`}>
-              xo,<br />
-              your past self ✦
-            </p>
+              {/* Sign off */}
+              <p className={`text-sm text-ink-light italic ${fontClass}`}>
+                xo,<br />
+                your past self ✦
+              </p>
 
-            {/* Date stamp */}
-            <p className="font-body text-xs text-ink-light/50 mt-4 text-right">
-              {today}
-            </p>
+              {/* Date stamp */}
+              <p className="font-body text-xs text-ink-light/50 mt-4 text-right">
+                {today}
+              </p>
+
+            </div>
           </div>
         </div>
 
