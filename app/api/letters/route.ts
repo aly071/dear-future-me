@@ -1,3 +1,5 @@
+import { rateLimit } from '@/lib/ratelimit'
+import { headers } from 'next/headers'
 import { NextResponse } from 'next/server'
 import { prisma } from '@/lib/prisma'
 import { generateToken, buildUrl } from '@/lib/crypto'
@@ -15,11 +17,24 @@ const schema = z.object({
     font:     z.enum(['caveat', 'lora', 'playfair', 'dm-serif']),
     stickers: z.array(z.string()).max(5),
     seal:     z.enum(['none', 'thistle', 'bouquet', 'bow', 'rose', 'wreath', 'daisy']).optional(),
+    envelope: z.enum(['handmade', 'classic', 'blush', 'crimson', 'teal', 'kraft', 'silver']).optional(),
+    paper:    z.enum(['parchment', 'watercolor', 'botanical', 'floral', 'butterfly', 'collage', 'gridleaf', 'vintage']).optional(),
   }),
 })
 
 export async function POST(req: Request) {
   try {
+    const headersList = await headers()
+    const ip = headersList.get('x-forwarded-for') ?? 'unknown'
+    const allowed = rateLimit(ip, 5, 60_000)
+
+    if (!allowed) {
+      return NextResponse.json(
+        { error: 'Too many requests. Please wait a moment before trying again.' },
+        { status: 429 }
+      )
+    }
+
     const body = await req.json()
     const parsed = schema.safeParse(body)
 
