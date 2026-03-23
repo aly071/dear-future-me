@@ -1,38 +1,35 @@
-# 💌 Dear Future Me
+💌 Dear Future Me
 
-Dear Future Me is a heartfelt little web app I built where you can write a letter to your future self. You pick a date, write your letter, decorate your envelope, and it gets delivered straight to your inbox when the time comes.
+Dear Future Me is a heartfelt web app that lets you write a letter to your future self. Pick a date, write your thoughts, decorate your envelope, and it will be delivered straight to your inbox at the time you choose.
 
-Live site: **https://dear-future-me-five.vercel.app**
+🌐 Live site: https://dear-future-me-five.vercel.app
 
-## ✨ What it does
+✨ Features
+📝 Write a personal letter — capture your thoughts, goals, or reflections
+🎨 Customize your envelope — choose colors, fonts, and stickers
+📅 Schedule delivery — pick any future date or milestone like 6 months / 1 year
+✉️ Automatic email delivery — your letter is sent to your inbox at the chosen time
+👀 Preview your letter — see exactly how it will look before sending
 
-- 📝 Write a personal letter to your future self
-- 🎨 Customize your envelope with colors, fonts, and stickers
-- 📅 Choose any future delivery date — or pick a milestone like 6 months or 1 year
-- ✉️ Automatic email delivery on your chosen date
-- 👀 Preview your letter before sealing it
+🛠️ Tech Stack
+Next.js 16 — App Router + API Routes
+Tailwind CSS v4 — modern styling
+Framer Motion — smooth animations
+Zustand — state management
+Prisma v5 + Supabase — database & backend
+Resend + React Email — reliable email delivery
+Vercel + Vercel Cron — deployment & scheduling
 
-## 🛠️ Built with
-
-- **Next.js 16** — App Router + API Routes
-- **Tailwind CSS v4** — styling
-- **Framer Motion** — animations
-- **Zustand** — state management
-- **Prisma v5 + Supabase** — database
-- **Resend + React Email** — email delivery
-- **Vercel + Vercel Cron** — deployment and scheduling
-
-## 📁 Project structure
-```
+📁 Project Structure
 dear-future-me/
 ├── app/                  # Next.js App Router
 │   ├── api/              # API routes (letters, verify, cron)
-│   ├── write/            # 4-step wizard page
+│   ├── write/            # 4-step letter wizard page
 │   └── confirmed/        # Post-verification page
 ├── components/
 │   ├── editor/           # Step 1 — Write your letter
 │   ├── customize/        # Step 2 — Decorate your envelope
-│   ├── preview/          # Step 3 — Preview
+│   ├── preview/          # Step 3 — Preview your letter
 │   ├── confirm/          # Step 4 — Confirm & send
 │   └── wizard/           # Wizard shell & stepper
 ├── emails/               # React Email templates
@@ -40,17 +37,15 @@ dear-future-me/
 ├── prisma/               # Database schema & migrations
 ├── store/                # Zustand letter store
 └── types/                # TypeScript types
-```
 
-## 🙋‍♀️ Connect with me
+🙋‍♀️ Connect with Me
+🌐 Portfolio: nxahlyv2.vercel.app
+💼 LinkedIn: Nathaly Pearl S
+🐙 GitHub: aly071
+📧 Email: salanatinnathaly@gmail.com
+📄 License
 
-I'd love to hear what you think of this project!
+Open for inspiration and learning. Please don’t copy the design directly. ✦
 
-- 🌐 Portfolio — [nxahlyv2.vercel.app](https://nxahlyv2.vercel.app)
-- 💼 LinkedIn — [nathaly-pearl-s](https://www.linkedin.com/in/nathaly-pearl-s-08396a347/)
-- 🐙 GitHub — [aly071](https://github.com/aly071)
-- 📧 Email — salanatinnathaly@gmail.com
-
-## 📄 License
-
-Open for inspiration and learning. Please don't copy the design directly. ✦
+✨ Try it now: https://dear-future-me-five.vercel.app
+ and write a letter to your future self today!
